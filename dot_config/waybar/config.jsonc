@@ -1,4 +1,9 @@
 {
+    "output": [
+        "DP-3",
+        "DP-2",
+        "HDMI-A-1"
+    ],
     "spacing": 18,
     "margin-top": 15,
     "modules-left": [
@@ -8,6 +13,7 @@
         "clock",
         "hyprland/workspaces",
         "pulseaudio",
+        "bluetooth",
         "network",
         "battery"
     ],
@@ -107,6 +113,17 @@
             ]
         },
         "on-click": "pavucontrol"
+    },
+    "bluetooth": {
+        "format": " {status}",
+        "format-connected": " {device_alias}",
+        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+        // "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+        "on-click": "kitty bluetui"
     },
     "network": {
         // "interface": "wlp2s0",
