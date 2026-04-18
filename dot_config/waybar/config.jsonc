@@ -110,6 +110,7 @@
     "tooltip-format-ethernet": "{ifname} <span color='#a6e3a1'>󰈀</span>",
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 50,
+    "on-click": "kitty nmtui"
   },
   "cpu": {
     "format": "<span color='#f38ba8'>󰍛</span> {usage}%",
