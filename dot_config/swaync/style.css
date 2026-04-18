@@ -1,0 +1,305 @@
+/*
+ * SwayNC Catppuccin Mocha Theme (Self-Contained)
+ * Waybar-consistent styling
+ */
+
+@import "colors.css";
+
+* {
+  font-family:
+    "Outfit", "Rubik", "Google Sans Flex", "JetBrainsMono Nerd Font Propo",
+    "Noto Sans CJK JP", "Noto Sans CJK KR", sans-serif;
+  outline: none;
+  text-shadow: none;
+  -gtk-icon-filter: none;
+}
+
+.notification,
+.widget-title button,
+.widget-buttons-grid button,
+.widget-mpris button,
+.close-button {
+  transition: background 150ms ease-in-out;
+}
+
+.control-center {
+  background: rgba(30, 30, 46, 0.9);
+  color: @text;
+  border-radius: 12px;
+  border: 1px solid @surface1;
+  margin: 10px;
+  padding: 10px;
+}
+
+.control-center-list {
+  background: transparent;
+}
+
+/* Notifications */
+.notification-row {
+  outline: none;
+  margin: 4px 6px;
+  background: transparent;
+}
+
+.notification-background {
+  background: transparent;
+  padding: 0;
+}
+
+.notification-group {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.notification {
+  background: @surface0;
+  border-radius: 12px;
+  color: @text;
+  padding: 0;
+  border: 1px solid @surface1;
+  box-shadow: none;
+}
+
+.notification:hover {
+  background: @surface1;
+  box-shadow: none;
+}
+
+.notification-default-action,
+.notification-action {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: @text;
+  border-radius: 12px;
+  border: none;
+}
+
+.notification-default-action:hover,
+.notification-action:hover {
+  background: transparent;
+}
+
+.notification-content {
+  padding: 16px 14px;
+}
+
+.notification-content label {
+  line-height: 1.6; /* Generous clearance for Rubik font metrics */
+  padding: 3px 0;
+  margin: 0;
+}
+
+.summary {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: @mauve;
+  padding-bottom: 6px;
+}
+
+.body {
+  font-size: 0.95rem;
+  color: @text;
+}
+
+.text-box {
+  margin: 0;
+  padding: 0;
+}
+
+.time {
+  font-size: 0.85rem;
+  color: @overlay2;
+  margin-right: 15px;
+}
+
+.close-button {
+  background: @surface2;
+  color: @text;
+  border-radius: 99px;
+  margin-top: 5px;
+  margin-right: 5px;
+  min-width: 24px;
+  min-height: 24px;
+  border: none;
+}
+
+.close-button:hover {
+  background: @red;
+  color: @crust;
+}
+
+/* Widgets */
+
+/* Title */
+.widget-title {
+  padding: 10px;
+  margin: 5px;
+}
+
+.widget-title > label {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: @mauve;
+}
+
+.widget-title > button {
+  background: @surface0;
+  color: @text;
+  border-radius: 8px;
+  padding: 4px 12px;
+  border: 1px solid @surface1;
+}
+
+.widget-title > button:hover {
+  background: @red;
+  color: @crust;
+  border: 1px solid @red;
+}
+
+/* Multi-Buttons Grid */
+.widget-buttons-grid {
+  background: @surface0;
+  border-radius: 12px;
+  padding: 10px;
+  margin: 5px;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+  background: @surface1;
+  border-radius: 12px;
+  color: @text;
+  margin: 3px;
+  padding: 6px;
+  border: 1px solid transparent;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+  background: @surface2;
+  border: 1px solid @mauve;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button.toggle:checked {
+  background: @mauve;
+  color: @crust;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button.toggle:checked label {
+  color: @crust;
+}
+
+/* MPRIS Media Player */
+.widget-mpris {
+  background: @surface0;
+  border-radius: 12px;
+  padding: 10px;
+  margin: 5px;
+}
+
+.widget-mpris-player {
+  padding: 5px;
+}
+
+.widget-mpris-title {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: @mauve;
+}
+
+.widget-mpris-subtitle {
+  font-size: 0.9rem;
+  color: @subtext1;
+}
+
+.widget-mpris-album-art {
+  border-radius: 8px;
+}
+
+.widget-mpris-player > box > button {
+  background: @surface1;
+  border-radius: 99px;
+  color: @text;
+  padding: 6px;
+  margin: 0 4px;
+  border: none;
+}
+
+.widget-mpris-player > box > button:hover {
+  background: @mauve;
+  color: @crust;
+}
+
+/* Sliders (Volume / Backlight) */
+.widget-volume, .widget-backlight {
+  background: @surface0;
+  border-radius: 12px;
+  padding: 10px;
+  margin: 5px;
+}
+
+.widget-volume trough, .widget-backlight trough {
+  min-height: 12px;
+  background: @surface1;
+  border-radius: 99px;
+}
+
+.widget-volume highlight, .widget-backlight highlight {
+  background: @mauve;
+  border-radius: 99px;
+}
+
+.widget-volume slider, .widget-backlight slider {
+  background: @text;
+  border-radius: 99px;
+  min-width: 12px;
+  min-height: 12px;
+}
+
+.widget-volume label, .widget-backlight label {
+  font-size: 1.2rem;
+  color: @mauve;
+  padding-right: 10px;
+}
+
+/* Do Not Disturb Toggle */
+.widget-dnd {
+  background: @surface0;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 5px;
+  font-weight: 500;
+  color: @text;
+}
+
+.widget-dnd > switch {
+  background: @surface1;
+  border-radius: 99px;
+  border: 1px solid @surface1;
+}
+
+.widget-dnd > switch:checked {
+  background: @mauve;
+  border: 1px solid @mauve;
+}
+
+.widget-dnd > switch slider {
+  background: @text;
+  border-radius: 99px;
+}
+
+/* Placeholder for empty state */
+.control-center-list-placeholder {
+  opacity: 0.4;
+  margin: 20px;
+}
+
+/* Scrollbar */
+scrollbar, scrollbar trough, scrollbar slider {
+  all: unset;
+  min-width: 0px;
+  min-height: 0px;
+  border: none;
+  background: transparent;
+}
