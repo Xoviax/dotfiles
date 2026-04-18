@@ -1,151 +1,122 @@
 {
-    "output": [
-        "DP-3",
-        "DP-2",
-        "HDMI-A-1"
-    ],
-    "spacing": 18,
-    "margin-top": 15,
-    "modules-left": [
-        "custom/media"
-    ],
-    "modules-center": [
-        "clock",
-        "hyprland/workspaces",
-        "pulseaudio",
-        "bluetooth",
-        "network",
-        "battery"
-    ],
-    "modules-right": [
-        "tray"
-    ],
-    "hyprland/workspaces": {
-        "format": "{icon}",
-        "on-click": "activate",
-        "format-icons": {
-            "1": "1",
-            "2": "2",
-            "3": "3",
-            "4": "4",
-            "5": "5",
-            "6": "6",
-            "7": "7",
-            "8": "8",
-            "9": "9",
-            "10": "10",
-            "default": "",
-            "urgent": ""
-        },
-        "persistent-workspaces": {
-            "DP-3": [
-                1,
-                2,
-                3,
-                4,
-                5
-            ],
-            "DP-2": [
-                6,
-                7
-            ],
-            "HDMI-A-1": [
-                8,
-                9
-            ],
-            "DP-1": [
-                10
-            ]
-        }
+  "output": ["DP-3", "DP-2", "HDMI-A-1"],
+  "spacing": 18,
+  "margin-top": 15,
+  "modules-center": [
+    "clock",
+    "hyprland/workspaces",
+    "pulseaudio",
+    "bluetooth",
+    "network",
+    "cpu",
+  ],
+  "modules-right": ["tray"],
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "format-icons": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10",
+      "default": "",
+      "urgent": "",
     },
-    "custom/media": {
-        "format": "{icon} {}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "󰝚"
-        },
-        "escape": true,
-        "exec": "playerctl metadata --format '{\"text\": \"{{artist}} - {{title}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' --follow"
+    "persistent-workspaces": {
+      "DP-3": [1, 2, 3, 4, 5],
+      "DP-2": [6, 7],
+      "HDMI-A-1": [8, 9],
+      "DP-1": [10],
     },
-    "clock": {
-        "format": "  {:%H:%M}",
-        "format-alt": "󰃭  {:%A, %B %d, %Y}",
-        "tooltip-format": "<tt><small>{calendar}</small></tt>",
-        "calendar": {
-            "mode": "year",
-            "mode-mon-col": 3,
-            "weeks-pos": "right",
-            "on-scroll": 1,
-            "on-click-right": "mode",
-            "format": {
-                "months": "<span color='#ffead3'><b>{}</b></span>",
-                "days": "<span color='#ecc6d9'><b>{}</b></span>",
-                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
-            }
-        },
-        "actions": {
-            "on-click-right": "mode",
-            "on-click-forward": "tz_up",
-            "on-click-backward": "tz_down",
-            "on-scroll-up": "shift_up",
-            "on-scroll-down": "shift_down"
-        }
+  },
+  "custom/media": {
+    "format": "{icon} {}",
+    "return-type": "json",
+    "max-length": 40,
+    "format-icons": {
+      "spotify": "",
+      "default": "󰝚",
     },
-    "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "format-bluetooth": " {volume}%",
-        "format-muted": "Muted  󰝟",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": [
-                "󰕿",
-                "󰖀",
-                "󰕾"
-            ]
-        },
-        "on-click": "pavucontrol"
+    "escape": true,
+    "exec": "playerctl metadata --format '{\"text\": \"{{artist}} - {{title}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' --follow",
+  },
+  "clock": {
+    "format": "<span color='#74c7ec'></span>  {:%H:%M}",
+    "format-alt": "<span color='#89dceb'>󰃭</span>  {:%A, %B %d, %Y}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "year",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "on-click-right": "mode",
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>",
+      },
     },
-    "bluetooth": {
-        "format": " {status}",
-        "format-connected": " {device_alias}",
-        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
-        // "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
-        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
-        "on-click": "kitty bluetui"
+    "actions": {
+      "on-click-right": "mode",
+      "on-click-forward": "tz_up",
+      "on-click-backward": "tz_down",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down",
     },
-    "network": {
-        // "interface": "wlp2s0",
-        "format": "{ifname}",
-        "format-wifi": "{essid} {icon}",
-        "format-icons": [
-            "󰤯",
-            "󰤟",
-            "󰤢",
-            "󰤥",
-            "󰤨"
-        ],
-        "format-ethernet": "󰈀 {ipaddr}",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "󰤮  Disconnected",
-        "tooltip-format-wifi": "{essid} ({signaldBm}dBm) ",
-        "tooltip-format-ethernet": "{ifname} 󰈀",
-        "tooltip-format-disconnected": "Disconnected",
-        "max-length": 50
+  },
+  "pulseaudio": {
+    "format": "<span color='#fab387'>{icon}</span> {volume}%",
+    "format-bluetooth": " {volume}%",
+    "format-muted": "Muted  󰝟",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["󰕿", "󰖀", "󰕾"],
     },
-    "tray": {
-        "icon-size": 21,
-        "spacing": 10
-    }
+    "on-click": "kitty wiremix",
+  },
+  "bluetooth": {
+    "format": "<span color='#89b4fa'></span> {status}",
+    "format-connected": "<span color='#89b4fa'></span> {device_alias}",
+    "format-connected-battery": "<span color='#89b4fa'></span> {device_alias} {device_battery_percentage}%",
+    // "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+    "on-click": "kitty bluetui",
+  },
+  "network": {
+    // "interface": "wlp2s0",
+    "format": "{ifname}",
+    "format-wifi": "{essid} <span color='#a6e3a1'>{icon}</span>",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format-ethernet": "<span color='#a6e3a1'>󰈀</span> {ipaddr}",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "󰤮  Disconnected",
+    "tooltip-format-wifi": "{essid} ({signaldBm}dBm) ",
+    "tooltip-format-ethernet": "{ifname} <span color='#a6e3a1'>󰈀</span>",
+    "tooltip-format-disconnected": "Disconnected",
+    "max-length": 50,
+  },
+  "cpu": {
+    "format": "<span color='#f38ba8'>󰍛</span> {usage}%",
+    "on-click": "kitty --class waybar_btop -e btop",
+  },
+  "tray": {
+    "icon-size": 21,
+    "spacing": 10,
+  },
 }
