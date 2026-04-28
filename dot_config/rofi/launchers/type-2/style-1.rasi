@@ -13,6 +13,13 @@ configuration {
     show-icons:                 true;
     display-drun:               "";
 	drun-display-format:        "{name}";
+
+    /* Search settings */
+    matching:                   "fuzzy";
+    tokenize:                   true;
+    sort:                       true;
+    sorting-method:             "fzf";
+    drun-match-fields:          "name,generic,exec,categories,keywords";
 }
 
 /*****----- Global Properties -----*****/
