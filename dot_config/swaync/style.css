@@ -232,32 +232,32 @@
 }
 
 /* Sliders (Volume / Backlight) */
-.widget-volume, .widget-backlight {
+.widget-volume {
   background: @surface0;
   border-radius: 12px;
   padding: 10px;
   margin: 5px;
 }
 
-.widget-volume trough, .widget-backlight trough {
+.widget-volume trough {
   min-height: 12px;
   background: @surface1;
   border-radius: 99px;
 }
 
-.widget-volume highlight, .widget-backlight highlight {
+.widget-volume highlight {
   background: @mauve;
   border-radius: 99px;
 }
 
-.widget-volume slider, .widget-backlight slider {
+.widget-volume slider {
   background: @text;
   border-radius: 99px;
   min-width: 12px;
   min-height: 12px;
 }
 
-.widget-volume label, .widget-backlight label {
+.widget-volume label {
   font-size: 1.2rem;
   color: @mauve;
   padding-right: 10px;

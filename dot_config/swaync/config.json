@@ -7,7 +7,7 @@
   "control-center-layer": "top",
   "layer-shell": true,
   "layer-shell-cover-screen": false,
-  "cssPriority": "highest",
+  "cssPriority": "user",
   "control-center-margin-top": 0,
   "control-center-margin-bottom": 0,
   "control-center-margin-right": 0,
@@ -44,7 +44,6 @@
     "buttons-grid",
     "mpris",
     "volume",
-    "backlight",
     "dnd",
     "notifications"
   ],
@@ -63,14 +62,12 @@
     "mpris": {
       "autohide": false,
       "show-album-art": "always",
-      "loop-carousel": true
+      "loop-carousel": true,
+      "blacklist": [
+        "tidal-hifi"
+      ]
     },
-    "backlight": {
-      "device": "amdgpu_bl1",
-      "label": "\ueb7e",
-      "slider": true,
-      "min": 10
-    },
+
     "volume": {
       "device": "default",
       "label": "\ueb51",
