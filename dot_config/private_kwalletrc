@@ -1,0 +1,4 @@
+[Wallet]
+Enabled=false
+Prompt on Open=false
+Default Wallet=Default keyring
