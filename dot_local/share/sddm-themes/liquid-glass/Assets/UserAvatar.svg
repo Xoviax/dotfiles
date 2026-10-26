@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="white">
+  <!-- Circular Head -->
+  <circle cx="24" cy="17" r="8" fill="white" fill-opacity="0.9" />
+  <!-- Shoulders / Torso -->
+  <path d="M10 39 C10 30 16 27 24 27 C32 27 38 30 38 39 C38 41 36 42 34 42 L14 42 C12 42 10 41 10 39 Z" fill="white" fill-opacity="0.9" />
+</svg>

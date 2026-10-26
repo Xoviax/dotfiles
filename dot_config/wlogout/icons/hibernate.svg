@@ -1,6 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#cdd6f4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <line x1="2" y1="12" x2="22" y2="12"></line>
-  <line x1="12" y1="2" x2="12" y2="22"></line>
-  <line x1="19" y1="16" x2="5" y2="8"></line>
-  <line x1="5" y1="16" x2="19" y2="8"></line>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="24.0" y1="42.5" x2="24.0" y2="5.5"/>
+  <line x1="7.98" y1="33.25" x2="40.02" y2="14.75"/>
+  <line x1="40.02" y1="33.25" x2="7.98" y2="14.75"/>
+  <path d="M28.0 14.5 L24.0 10.5 L20.0 14.5"/>
+  <path d="M27.2 9.0 L24.0 5.5 L20.8 9.0"/>
+  <path d="M26.4 19.5 L24.0 16.5 L21.6 19.5"/>
+  <path d="M34.23 22.71 L35.69 17.25 L30.23 15.79"/>
+  <path d="M38.59 19.27 L40.02 14.75 L35.39 13.73"/>
+  <path d="M29.1 23.83 L30.5 20.25 L26.7 19.67"/>
+  <path d="M30.23 32.21 L35.69 30.75 L34.23 25.29"/>
+  <path d="M35.39 34.27 L40.02 33.25 L38.59 28.73"/>
+  <path d="M26.7 28.33 L30.5 27.75 L29.1 24.17"/>
+  <path d="M20.0 33.5 L24.0 37.5 L28.0 33.5"/>
+  <path d="M20.8 39.0 L24.0 42.5 L27.2 39.0"/>
+  <path d="M21.6 28.5 L24.0 31.5 L26.4 28.5"/>
+  <path d="M13.77 25.29 L12.31 30.75 L17.77 32.21"/>
+  <path d="M9.41 28.73 L7.98 33.25 L12.61 34.27"/>
+  <path d="M18.9 24.17 L17.5 27.75 L21.3 28.33"/>
+  <path d="M17.77 15.79 L12.31 17.25 L13.77 22.71"/>
+  <path d="M12.61 13.73 L7.98 14.75 L9.41 19.27"/>
+  <path d="M21.3 19.67 L17.5 20.25 L18.9 23.83"/>
 </svg>

@@ -1,0 +1,203 @@
+#!/usr/bin/env python3
+"""
+SDDM Xsetup - Executed by SDDM X11 display server on startup and logout.
+Configures display layout, orientations, and positions to match Hyprland desktop:
+  - LG 24GL600F: 1920x1080 @ 0x0 (normal)
+  - Samsung Odyssey G5: 2560x1440 @ 1920x0 (normal, PRIMARY)
+  - BenQ GW2470: 1920x1080 @ 4480x0 (rotate left / portrait right-side up)
+  - HYTE Y70Touch: 3840x1100 @ 5560x0 (rotate right / portrait right-side up)
+Enforces standard cursor size (24px) and centers cursor on Samsung Odyssey G5 (3200, 720).
+"""
+
+import sys
+import os
+import time
+import subprocess
+import re
+
+LOG_FILE = "/tmp/sddm-display.log"
+
+def log(msg):
+    ts = time.strftime("%Y-%m-%d %H:%M:%S")
+    line = f"[{ts}] {msg}\n"
+    try:
+        with open(LOG_FILE, "a") as f:
+            f.write(line)
+            f.flush()
+    except Exception:
+        pass
+
+def enforce_cursor_size():
+    """Enforce standard 24px cursor size in X11 resources to prevent Qt/Xorg HiDPI cursor ballooning."""
+    try:
+        xresources = "Xcursor.size: 24\nXcursor.theme: breeze_cursors\n"
+        subprocess.run(["xrdb", "-merge"], input=xresources.encode(), timeout=2)
+        log("Enforced Xcursor.size: 24 via xrdb")
+    except Exception as e:
+        log(f"xrdb error: {e}")
+
+def parse_xrandr():
+    try:
+        out = subprocess.check_output(["xrandr", "--verbose"], stderr=subprocess.STDOUT, timeout=3).decode("latin1", errors="ignore")
+    except Exception as e:
+        log(f"Failed to run xrandr --verbose: {e}")
+        try:
+            out = subprocess.check_output(["xrandr", "-q"], stderr=subprocess.STDOUT, timeout=3).decode("latin1", errors="ignore")
+        except Exception as e2:
+            log(f"Failed to run xrandr -q: {e2}")
+            return {}
+
+    outputs = {}
+    current = None
+    for line in out.splitlines():
+        m = re.match(r"^(\S+)\s+(connected|disconnected)\s*(.*)", line)
+        if m:
+            name, status, rest = m.group(1), m.group(2), m.group(3)
+            if status == "connected":
+                current = {"name": name, "rest": rest, "modes": [], "edid": ""}
+                outputs[name] = current
+            else:
+                current = None
+            continue
+        if current:
+            mm = re.match(r"^\s+(\d+x\d+)", line)
+            if mm:
+                current["modes"].append(mm.group(1))
+            elif "EDID:" in line or re.match(r"^\s+[0-9a-fA-F]{32,}", line):
+                current["edid"] += line.strip()
+
+    return outputs
+
+def classify_outputs(outputs):
+    classified = {}
+    remaining = dict(outputs)
+
+    # 1. Samsung Odyssey G5 (2560x1440)
+    for name, data in list(remaining.items()):
+        text = (name + " " + data["edid"] + " " + " ".join(data["modes"])).lower()
+        if "odyssey" in text or "g5" in text or "2560x1440" in data["modes"]:
+            classified["samsung"] = name
+            del remaining[name]
+            break
+
+    # 2. HYTE Y70 Touch (3840x1100)
+    for name, data in list(remaining.items()):
+        text = (name + " " + data["edid"] + " " + " ".join(data["modes"])).lower()
+        if "hyte" in text or "y70" in text or "3840x1100" in data["modes"]:
+            classified["hyte"] = name
+            del remaining[name]
+            break
+
+    # 3. BenQ GW2470 (HDMI connection or BenQ EDID)
+    for name, data in list(remaining.items()):
+        text = (name + " " + data["edid"]).lower()
+        if "gw2470" in text or "benq" in text or name.lower().startswith("hdmi"):
+            classified["benq"] = name
+            del remaining[name]
+            break
+
+    # 4. LG 24GL600F (DisplayPort 1080p or LG EDID)
+    for name, data in list(remaining.items()):
+        text = (name + " " + data["edid"]).lower()
+        if "24gl600f" in text or "lg" in text or name.lower().startswith("dp"):
+            classified["lg"] = name
+            del remaining[name]
+            break
+
+    return classified
+
+def setup_displays():
+    outputs = parse_xrandr()
+    log(f"Detected connected outputs: {list(outputs.keys())}")
+    classified = classify_outputs(outputs)
+    log(f"Classified outputs: {classified}")
+
+    cmd_base = ["xrandr"]
+    has_config = False
+
+    if "lg" in classified:
+        cmd_base += ["--output", classified["lg"], "--mode", "1920x1080", "--pos", "0x0", "--rotate", "normal"]
+        has_config = True
+    if "samsung" in classified:
+        cmd_base += ["--output", classified["samsung"], "--mode", "2560x1440", "--pos", "1920x0", "--rotate", "normal", "--primary"]
+        has_config = True
+    if "benq" in classified:
+        # Flipped 180 deg from 'right' to 'left' to correct upside-down orientation
+        cmd_base += ["--output", classified["benq"], "--mode", "1920x1080", "--pos", "4480x0", "--rotate", "left"]
+        has_config = True
+    if "hyte" in classified:
+        # Flipped 180 deg from 'left' to 'right' to correct upside-down orientation
+        cmd_base += ["--output", classified["hyte"], "--mode", "3840x1100", "--pos", "5560x0", "--rotate", "right"]
+        has_config = True
+
+    if not has_config:
+        log("No matching monitors identified, skipping xrandr reconfiguration")
+        return
+
+    # Try applying with full framebuffer dimension (6660 x 3840)
+    cmd_with_fb = cmd_base + ["--fb", "6660x3840"]
+    try:
+        log(f"Executing: {' '.join(cmd_with_fb)}")
+        res = subprocess.run(cmd_with_fb, capture_output=True, text=True, timeout=5)
+        if res.returncode == 0:
+            log("xrandr configuration applied successfully with --fb")
+            return
+        log(f"xrandr with --fb failed (code {res.returncode}): {res.stderr.strip()}, retrying without --fb...")
+    except Exception as e:
+        log(f"xrandr with --fb error: {e}, retrying without --fb...")
+
+    # Fallback without --fb
+    try:
+        log(f"Executing: {' '.join(cmd_base)}")
+        res = subprocess.run(cmd_base, capture_output=True, text=True, timeout=5)
+        if res.returncode == 0:
+            log("xrandr configuration applied successfully")
+        else:
+            log(f"xrandr failed (code {res.returncode}): {res.stderr.strip()}")
+    except Exception as e:
+        log(f"xrandr error: {e}")
+
+def get_primary_center():
+    try:
+        out = subprocess.check_output(["xrandr", "--current"], stderr=subprocess.STDOUT, timeout=2).decode()
+        # Look for primary output
+        for m in re.finditer(r"^(\S+)\s+connected\s+primary.*?(\d+)x(\d+)\+(\d+)\+(\d+)", out, re.MULTILINE):
+            name, w, h, x, y = m.group(1), int(m.group(2)), int(m.group(3)), int(m.group(4)), int(m.group(5))
+            return x + w // 2, y + h // 2, name
+
+        # Look for 2560x1440 output
+        for m in re.finditer(r"^(\S+)\s+connected.*?(\d+)x(\d+)\+(\d+)\+(\d+)", out, re.MULTILINE):
+            name, w, h, x, y = m.group(1), int(m.group(2)), int(m.group(3)), int(m.group(4)), int(m.group(5))
+            if w == 2560 and h == 1440:
+                return x + w // 2, y + h // 2, name
+    except Exception as e:
+        log(f"get_primary_center error: {e}")
+
+    # Physical layout default: Samsung Odyssey G5 at (1920, 0), size 2560x1440
+    # Center = (1920 + 1280, 720) = (3200, 720)
+    return 3200, 720, "Samsung-Odyssey-Fallback"
+
+def center_cursor():
+    cx, cy, name = get_primary_center()
+    try:
+        subprocess.run(["xdotool", "mousemove", str(cx), str(cy)], timeout=1)
+        log(f"Cursor placed at ({cx}, {cy}) on {name}")
+    except Exception as e:
+        log(f"xdotool error: {e}")
+
+if __name__ == "__main__":
+    log("=== SDDM Xsetup Invoked ===")
+    enforce_cursor_size()
+    setup_displays()
+    enforce_cursor_size()
+    center_cursor()
+
+    # Background lock loop as SDDM greeter views initialize
+    try:
+        if os.fork() == 0:
+            for delay in [0.2, 0.5, 1.0, 1.8]:
+                time.sleep(delay)
+                center_cursor()
+            sys.exit(0)
+    except Exception as e:
+        log(f"fork error: {e}")
