@@ -89,3 +89,18 @@ menuitem:hover {
   background-color: @lavender;
   color: @text;
 }
+
+#custom-power {
+  background-color: @surface0;
+  color: @red;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 1rem;
+  margin-left: 6px;
+  transition: all 200ms ease-in-out;
+}
+
+#custom-power:hover {
+  background-color: @surface1;
+  color: @peach;
+}

@@ -1,5 +1,9 @@
 {
-  "output": ["DP-3", "DP-2", "HDMI-A-1"],
+  "output": [
+    "DP-3",
+    "DP-2",
+    "HDMI-A-1"
+  ],
   "spacing": 18,
   "margin-top": 15,
   "modules-center": [
@@ -10,7 +14,16 @@
     "network",
     "cpu",
   ],
-  "modules-right": ["tray"],
+  "modules-right": [
+    "tray",
+    "custom/power"
+  ],
+  "custom/power": {
+    "format": "",
+    "tooltip": true,
+    "tooltip-format": "Power & Session Menu",
+    "on-click": "~/.config/hypr/scripts/powermenu.sh"
+  },
   "hyprland/workspaces": {
     "format": "{icon}",
     "on-click": "activate",
@@ -29,10 +42,24 @@
       "urgent": "",
     },
     "persistent-workspaces": {
-      "DP-3": [1, 2, 3, 4, 5],
-      "DP-2": [6, 7],
-      "HDMI-A-1": [8, 9],
-      "DP-1": [10],
+      "DP-3": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "DP-2": [
+        6,
+        7
+      ],
+      "HDMI-A-1": [
+        8,
+        9
+      ],
+      "DP-1": [
+        10
+      ],
     },
   },
   "custom/media": {
@@ -83,7 +110,11 @@
       "phone": "",
       "portable": "",
       "car": "",
-      "default": ["󰕿", "󰖀", "󰕾"],
+      "default": [
+        "󰕿",
+        "󰖀",
+        "󰕾"
+      ],
     },
     "on-click": "kitty --class waybar_wiremix -e --override font_size=11.0 wiremix",
   },
@@ -102,7 +133,13 @@
     // "interface": "wlp2s0",
     "format": "{ifname}",
     "format-wifi": "{essid} <span color='#a6e3a1'>{icon}</span>",
-    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ],
     "format-ethernet": "<span color='#a6e3a1'>󰈀</span> {ipaddr}",
     "format-linked": "{ifname} (No IP) ",
     "format-disconnected": "󰤮  Disconnected",

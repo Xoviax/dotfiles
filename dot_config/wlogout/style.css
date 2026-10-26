@@ -1,0 +1,85 @@
+* {
+    background-image: none;
+    box-shadow: none;
+}
+
+window {
+    background-color: rgba(17, 17, 27, 0.75);
+}
+
+button {
+    border-radius: 18px;
+    border: 2px solid #313244;
+    text-decoration-color: #cdd6f4;
+    color: #cdd6f4;
+    background-color: rgba(30, 30, 46, 0.92);
+    border-style: solid;
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-size: 42px;
+    font-family: "Outfit", "JetBrainsMono Nerd Font Propo", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0px;
+    outline-style: none;
+    transition: all 0.2s ease-in-out;
+}
+
+button:focus, button:active, button:hover {
+    background-color: #313244;
+    outline-style: none;
+}
+
+#lock {
+    background-image: image(url("/home/xoviax/.config/wlogout/icons/lock.svg"), url("/usr/share/wlogout/icons/lock.png"));
+}
+
+#lock:focus, #lock:hover {
+    border-color: #cba6f7;
+    color: #cba6f7;
+}
+
+#suspend {
+    background-image: image(url("/home/xoviax/.config/wlogout/icons/suspend.svg"), url("/usr/share/wlogout/icons/suspend.png"));
+}
+
+#suspend:focus, #suspend:hover {
+    border-color: #89dceb;
+    color: #89dceb;
+}
+
+#logout {
+    background-image: image(url("/home/xoviax/.config/wlogout/icons/logout.svg"), url("/usr/share/wlogout/icons/logout.png"));
+}
+
+#logout:focus, #logout:hover {
+    border-color: #fab387;
+    color: #fab387;
+}
+
+#hibernate {
+    background-image: image(url("/home/xoviax/.config/wlogout/icons/hibernate.svg"), url("/usr/share/wlogout/icons/hibernate.png"));
+}
+
+#hibernate:focus, #hibernate:hover {
+    border-color: #74c7ec;
+    color: #74c7ec;
+}
+
+#reboot {
+    background-image: image(url("/home/xoviax/.config/wlogout/icons/reboot.svg"), url("/usr/share/wlogout/icons/reboot.png"));
+}
+
+#reboot:focus, #reboot:hover {
+    border-color: #a6e3a1;
+    color: #a6e3a1;
+}
+
+#shutdown {
+    background-image: image(url("/home/xoviax/.config/wlogout/icons/shutdown.svg"), url("/usr/share/wlogout/icons/shutdown.png"));
+}
+
+#shutdown:focus, #shutdown:hover {
+    border-color: #f38ba8;
+    color: #f38ba8;
+}

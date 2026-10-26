@@ -73,6 +73,7 @@ hdparm
 hwdetect
 hwinfo
 hyprland
+hyprlock
 hyprpicker
 hyprpolkitagent
 inetutils
