@@ -2,6 +2,7 @@
 
 -- Execute daemons and startup scripts once on Hyprland startup
 hl.on("hyprland.start", function()
+    hl.exec_cmd("python3 ~/.config/hypr/scripts/hypr-ipc-bridge.py")
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("waybar")
     hl.exec_cmd("swaync")

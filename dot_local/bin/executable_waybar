@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Transparent Waybar wrapper to ensure Hyprland Lua IPC bridge is active
+
+BRIDGE="$HOME/.config/hypr/scripts/hypr-ipc-bridge.py"
+if [ -f "$BRIDGE" ] && ! pgrep -f "hypr-ipc-bridge.py" >/dev/null; then
+    python3 "$BRIDGE" &
+    # Allow socket to bind
+    sleep 0.1
+fi
+
+export HYPRLAND_INSTANCE_SIGNATURE=compat
+exec /usr/bin/waybar "$@"
