@@ -3,11 +3,12 @@
 Hyprland IPC Compatibility Bridge for Lua Configurations.
 Transparently proxies Hyprland's socket1, translating legacy dispatch
 commands (like 'dispatch workspace <id>') into Lua-compatible
-'dispatch hl.dsp.exec_raw("<cmd>")' calls.
+'dispatch hl.dsp.focus({ workspace = "<id>" })' calls.
 """
 
 import os
 import sys
+import time
 import socket
 import signal
 import threading
@@ -33,24 +34,61 @@ def get_real_paths():
     compat_dir = os.path.join(runtime_dir, "hypr", "compat")
     return real_dir, compat_dir
 
+def translate_single(cmd_str):
+    cmd_str = cmd_str.strip()
+    if not cmd_str.startswith("dispatch "):
+        return cmd_str
+
+    rest = cmd_str[len("dispatch "):].strip()
+    if rest.startswith("hl."):
+        return cmd_str
+
+    parts = rest.split(maxsplit=1)
+    dispatcher = parts[0]
+    arg = parts[1].strip() if len(parts) > 1 else ""
+
+    # Workspace focusing (What Waybar calls on click!)
+    if dispatcher in ("workspace", "focusworkspaceoncurrentmonitor"):
+        arg_esc = arg.replace("\\", "\\\\").replace('"', '\\"')
+        return f'dispatch hl.dsp.focus({{ workspace = "{arg_esc}" }})'
+
+    if dispatcher == "togglespecialworkspace":
+        if arg:
+            arg_esc = arg.replace("\\", "\\\\").replace('"', '\\"')
+            return f'dispatch hl.dsp.workspace.toggle_special("{arg_esc}")'
+        return 'dispatch hl.dsp.workspace.toggle_special()'
+
+    if dispatcher in ("movetoworkspace", "movetoworkspacesilent"):
+        arg_esc = arg.replace("\\", "\\\\").replace('"', '\\"')
+        silent = ", silent = true" if "silent" in dispatcher else ""
+        return f'dispatch hl.dsp.window.move({{ workspace = "{arg_esc}"{silent} }})'
+
+    if dispatcher == "exec":
+        arg_esc = arg.replace("\\", "\\\\").replace('"', '\\"')
+        return f'dispatch hl.dsp.exec_cmd("{arg_esc}")'
+
+    if dispatcher in ("killactive", "closewindow"):
+        return 'dispatch hl.dsp.window.close()'
+
+    if dispatcher.isdigit():
+        return f'dispatch hl.dsp.focus({{ workspace = "{dispatcher}" }})'
+
+    return cmd_str
+
 def translate_command(text):
-    if text.startswith("dispatch ") and not text.startswith("dispatch hl."):
-        legacy = text[len("dispatch "):].strip()
-        legacy_esc = legacy.replace("\\", "\\\\").replace('"', '\\"')
-        return f'dispatch hl.dsp.exec_raw("{legacy_esc}")'
-    elif text.startswith("[[BATCH]]"):
+    if text.startswith("[[BATCH]]"):
         parts = text[len("[[BATCH]]"):].split(";")
-        new_parts = []
-        for p in parts:
-            p_s = p.strip()
-            if p_s.startswith("dispatch ") and not p_s.startswith("dispatch hl."):
-                leg = p_s[len("dispatch "):].strip()
-                leg_esc = leg.replace("\\", "\\\\").replace('"', '\\"')
-                new_parts.append(f'dispatch hl.dsp.exec_raw("{leg_esc}")')
-            else:
-                new_parts.append(p)
+        new_parts = [translate_single(p) for p in parts]
         return "[[BATCH]]" + ";".join(new_parts)
-    return text
+    return translate_single(text)
+
+def log(msg):
+    try:
+        with open("/tmp/hypr-bridge.log", "a") as f:
+            f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] {msg}\n")
+            f.flush()
+    except Exception:
+        pass
 
 def handle_client(client, real_sock_path):
     try:
@@ -60,6 +98,7 @@ def handle_client(client, real_sock_path):
         text = data.decode("utf-8", errors="ignore")
         translated = translate_command(text)
         if translated != text:
+            log(f"Translated: {repr(text)} -> {repr(translated)}")
             data = translated.encode("utf-8")
 
         real = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -74,8 +113,8 @@ def handle_client(client, real_sock_path):
             resp += chunk
         real.close()
         client.sendall(resp)
-    except Exception:
-        pass
+    except Exception as e:
+        log(f"Bridge error: {e}")
     finally:
         try:
             client.close()
@@ -103,6 +142,7 @@ def main():
     server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     server.bind(compat_sock)
     server.listen(64)
+    log(f"Bridge initialized on {compat_sock} forwarding to {real_sock}")
 
     def cleanup(*args):
         try:
