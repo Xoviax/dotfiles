@@ -42,7 +42,9 @@
   - **HDMI-A-1** (1920×1080 vertical, 90° rotation) — Document & coding monitor (Workspaces 8–9)
   - **DP-1** (HYTE Y70 Touch, 270° rotation) — Dedicated chassis display (Workspace 10)
 - **📐 Fixed-Size Power Menu**: Custom monitor-aware launcher calculates exact pixel margins on the fly so buttons remain consistent (130px × 130px) whether summoned on landscape, portrait, or ultrawide screens.
-- **🤖 HYTE Y70 Automation**: Startup script (`hyte_y70_display.sh`) automatically tiles `tclock` and `btop` with a `-0.69` split ratio on Workspace 10 with dual-engine (Lua + Hyprlang) IPC compatibility.
+- **🤖 HYTE Y70 Automation**: Automated chassis display tiling for `tclock` and `btop`:
+  - **Hyprland**: Startup script (`hyte_y70_display.sh`) automatically tiles `tclock` and `btop` with a `-0.69` split ratio on Workspace 10 with dual-engine (Lua + Hyprlang) IPC compatibility.
+  - **KDE Plasma**: Dedicated autostart script (`hyte_y70_kde.sh`) and KWin rules (`kwinrulesrc`) that position, size, and pin borderless instances across all virtual desktops without taskbar/pager clutter.
 - **🔒 Secure Screen Locking**: Hyprlock styled with blurred backgrounds, date/time typography, and unified lock script fallback (`lock.sh`).
 
 ---
@@ -135,7 +137,13 @@
 │   ├── rofi/                            # Application launcher & powermenu
 │   ├── kitty/                           # Kitty terminal theme and config
 │   ├── swaync/                          # Notification daemon stylesheet
-│   └── btop/                            # System monitor theme & config
+│   ├── btop/                            # System monitor theme & config
+│   ├── autostart/                       # Autostart entries (KDE Plasma Y70)
+│   └── kwinrulesrc                      # KWin rules for KDE Plasma Y70
+├── dot_local/
+│   └── bin/
+│       ├── executable_hyte_y70_kde.sh   # KDE Plasma Y70 startup script
+│       └── executable_waybar            # Waybar launcher wrapper
 ├── dot_zshrc                            # Shell aliases & configuration
 ├── dot_gitconfig                        # Git user configuration
 └── packages.txt                         # System dependency manifest

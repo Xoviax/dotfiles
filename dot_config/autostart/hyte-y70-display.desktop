@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Hyte Y70 Display (btop + tclock)
+Comment=Launch tclock and btop on Hyte Y70 touch screen on KDE Plasma startup
+Exec=/home/xoviax/.local/bin/hyte_y70_kde.sh
+Icon=utilities-system-monitor
+Terminal=false
+StartupNotify=false
+OnlyShowIn=KDE;
+X-KDE-autostart-phase=2
